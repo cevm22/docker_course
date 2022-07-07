@@ -41,3 +41,19 @@ Para poder acceder al contenedor Ubuntu sería correr el comand "exec" de docker
 
 Para eliminar el proceso, utilizar el comando
 > docker kill alwaysup
+
+Para detener y eliminar el contenedor
+> docker rm -f docker_name
+
+Para poder exponer un contenedor y poder acceder a este se debe indicar por que puertos del host/pc/server se comunicaran.
+En este caso se corre un contenedor -d en modo "background" con --name "proxy", indicando que el host escuchará en el puerto 8080 y apuntará al container en el 80 (puerto_host:puerto_container), el cual correrá un servidor ngix
+>docker run -d --name proxy -p 8080:80 nginx
+
+Para obtener TODOS logs de un container
+>docker logs docker_name
+
+Para acceder a la terminal y ver los logs se utiliza -f (significa follow)
+>docker logs -f docker_name
+
+Obtener los ultimos logs de docker se agrega -tail y los ultimos de logs por mostrar. En este caso se muestran los ultimos 10 logs
+>docker logs --tail 10 -f docker_name
