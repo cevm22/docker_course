@@ -69,3 +69,16 @@ crear un volumen
 
 crear volumen y arrancar un contenedor. donde 'src=' es el nombre del volumen  y despues de una 'comma' se indica el destino de los datos que se deasean almacenar 'dst='. En el siguiente ejemplo se arranca un contenedor con MongoDB y se crea un volumen con su destino de almacenamiento
 >docker run -d --name db --mount src=dbdata,dst=/data/db mongo
+
+Existen 3 tipos de almacenamiento o manejo de archivos.
+- Bind mount: es la forma más insegura, ya que abre la posibilidad de que se pueda acceder al host/pc/server.
+- Volume: es más seguro que bind mount porque Docker administra los archivos y los almacena como quiera. Pero esto dificulta un poco la manera para poder acceder a ellos, ya que sería necesario ingresar al contenedor o utilizar el comando copy
+- tmpfs: es temporal file system, este es poco usado y consiste en crear un almacenamiento de información que es guardada temporalmente en la memoria virtual, por lo que no toca el disco duro y es borrado una vez se apague o borre el contenedor
+
+En el manejo de archivos por medio de volumenes, se utiliza el comando 'cp'. Y no necesita el contenedor estar corriendo para poder manipular estos archivos
+
+En este caso en la terminal se encuentra ubicado con un archivo llamado 'first.txt' y el contenedor se llama 'testing_copy' que seguido de dos puntos ':' se indica la ruta de guardado dentro del contenedor.
+>docker cp first.txt testing_copy:/folder_test/second.txt
+
+Para poder sacar archivos de un docker, se hace de manera inversa. Primero la ruta donde se encuentra el archivo y luego renombramos el archivo
+>docker cp testing_copy:/folder_test/second.txt third.txt
