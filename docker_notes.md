@@ -98,3 +98,34 @@ Estos representan cada comando del Dockerfile, y cada capa aumenta el peso del c
 > docker history nombre_imagen:nombre_tag
 
 Si se requiere una mejor visualizacion de las capas, se puede visitar el hub de docker o instalar una herramienta llamada Dive que se obtiene en  https://github.com/wagoodman/dive.
+
+Tener en consideración primero instalar lo que casi no tiene cambios, en este caso serían todas las dependencias y por ultimo hacer las copias de los archivos que se agregan o modifican, esto ayudará a que no tenga que estar instalando todo nuevamente y solo haga los cambios a los archivos nuevos
+
+# Networks entre contenedores
+
+Para poder conectarse entre contenedores es necesario de crear "una red virtual" y agregar los contenedores a esa red, para que estas se puedan encontrar por el nombre del contenedor.
+
+Con este comando, puedes ver todas las redes creadas
+>docker network ls
+
+En el siguiente comando, se utiliza para crear una red virtual en docker
+>docker network create --attachable <network_name>
+
+Ver la informacion de la red, es igual con inspect
+>docker network inspect <network_name>
+
+Para conectar un contenedor a la red virtual 
+>docker network connect  <network_name> <container_name> 
+
+Si es necesario de variables de entorno se utiliza lo siguiente
+> docker run --env MY_VAR='' <image_name>
+
+En este ejemplo se puede ver que en la variable de entorno está despues del doble slash // encuentras 'db', este es el nombre del contenedor que tiene el servicio corriendo de mongo db. y finalmente se coloca el nombre que se usará para el contenedor
+> docker run -d --name app -p 3000:3000 --env MONGO_URL=mondodb://db:27017/db_name platziapp 
+
+# Docker compose
+Describir de forma declarativa la arquitectura de servicios que nuestra aplicacion necesita, como se comunicaran entre si, manejo de archivos, etc.
+se utiliza un archivo llamado docker-compose.yml donde viene toda la configuración de docker.
+
+y se ejecuta con el comando
+> docker-compose up -d
