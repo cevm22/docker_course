@@ -82,3 +82,19 @@ En este caso en la terminal se encuentra ubicado con un archivo llamado 'first.t
 
 Para poder sacar archivos de un docker, se hace de manera inversa. Primero la ruta donde se encuentra el archivo y luego renombramos el archivo
 >docker cp testing_copy:/folder_test/second.txt third.txt
+
+# Imagenes
+Las imagenes son como blueprints en donde indican las instrucciones de lo que se necesita para crear un contenedor, estas se almacenan en docker hub y por defecto cuando se busca una imagen por su nombre, esta es buscada en el docker hub. Tambien se pueden almacenar en lugares privados.
+
+Las imagenes siempre se basan de otro software y se pone con "FROM"
+los comandos RUN son acciones que quieres que haga el build en el momento de construccion de la imagen, utilizando comandos BASH
+
+para crear un Build o imagen, se utiliza docker build -t es 'tag', por nomenclatura de docker los tags van Image_system:version y finalmente la ruta de origen donde se encuentra el contexto de build y tambien está el Dockerfile.
+
+> docker build -t ubuntu:platzi .
+
+# Layes/capas
+Estos representan cada comando del Dockerfile, y cada capa aumenta el peso del contenedor. Por lo que es recomendable que si se van a instalar dependencias para despues borrarlos, estos se hagan en una sola capa y no en multiples. Ya que las capas funcionan como GIT, con diferencias y ocasiona aumento del peso del contenedor final. Para ver las capas en docker se utiliza el siguiente comando:
+> docker history nombre_imagen:nombre_tag
+
+Si se requiere una mejor visualizacion de las capas, se puede visitar el hub de docker o instalar una herramienta llamada Dive que se obtiene en  https://github.com/wagoodman/dive.
