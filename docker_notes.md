@@ -57,3 +57,15 @@ Para acceder a la terminal y ver los logs se utiliza -f (significa follow)
 
 Obtener los ultimos logs de docker se agrega -tail y los ultimos de logs por mostrar. En este caso se muestran los ultimos 10 logs
 >docker logs --tail 10 -f docker_name
+
+## Volumenes
+Estos se utilizan para crear un espacio en el disco del host/pc/server en donde lo administra Docker y guarda toda la informacion que quieres que sea persistente, para cuando se destruyan los contenedores, los archivos no sean borrados con ellos. Esto es util para guardar Bases de Datos y se pueda compartir entre contenedores de manera segura, sin poder acceder a los archivos del host/pc/server.
+
+lista de volumenes que tiene docker
+>docker volume ls 
+
+crear un volumen
+>docker volume create Volume_name
+
+crear volumen y arrancar un contenedor. donde 'src=' es el nombre del volumen  y despues de una 'comma' se indica el destino de los datos que se deasean almacenar 'dst='. En el siguiente ejemplo se arranca un contenedor con MongoDB y se crea un volumen con su destino de almacenamiento
+>docker run -d --name db --mount src=dbdata,dst=/data/db mongo
