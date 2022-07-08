@@ -20,6 +20,12 @@ Que es un contenedor ?
 
 * Cada contenedor tiene un ID único, también tiene un nombre.
 
+* Los 3 problemas del desarrollo del software es construir, distribuir y ejecutar
+
+* el principal problema que intenta resolver la virtualizacion permite atacar en simultaneo los 3 problemas del desarrollo del software. peso, costo administrativo y multiples formatos. y las maquinas virtuales ejecutan un SO completo incluido el kernel
+
+* Docker funciona por medio de una API interna
+
 ===================
 # Ciclo de vida de un contenedor
 Cada vez que un contendor se ejecuta, en realidad lo que ejecuta es un proceso del sistema operativo. Este proceso se le conoce como Main process.
@@ -84,7 +90,7 @@ Para poder sacar archivos de un docker, se hace de manera inversa. Primero la ru
 >docker cp testing_copy:/folder_test/second.txt third.txt
 
 # Imagenes
-Las imagenes son como blueprints en donde indican las instrucciones de lo que se necesita para crear un contenedor, estas se almacenan en docker hub y por defecto cuando se busca una imagen por su nombre, esta es buscada en el docker hub. Tambien se pueden almacenar en lugares privados.
+Las imagenes son un conjunto de capas algo asi como blueprints en donde indican las instrucciones de lo que se necesita para crear un contenedor, estas se almacenan en docker hub y por defecto cuando se busca una imagen por su nombre, esta es buscada en el docker hub. Tambien se pueden almacenar en lugares privados.
 
 Las imagenes siempre se basan de otro software y se pone con "FROM"
 los comandos RUN son acciones que quieres que haga el build en el momento de construccion de la imagen, utilizando comandos BASH
@@ -126,6 +132,9 @@ En este ejemplo se puede ver que en la variable de entorno está despues del dob
 # Docker compose
 Describir de forma declarativa la arquitectura de servicios que nuestra aplicacion necesita, como se comunicaran entre si, manejo de archivos, etc.
 se utiliza un archivo llamado docker-compose.yml donde viene toda la configuración de docker.
+
+crear imagenes de acuerdo a los servicios declarados en el file
+> docker-compose build
 
 y se ejecuta con el comando
 > docker-compose up -d
@@ -185,3 +194,12 @@ ENTRYPOINT [ "/bin/ping", "-c", "3"]
 CMD ["localhost"]
 
 ejemplo: > docker run --name pinger google.com
+
+# docker ignore
+En caso de que no quieras agregar archivos en el build se utiliza un archivo como lo hace GIT con el nombre ".dockerignore"
+
+
+docker monta en un filesystem temporal todos los archivos en donde se encuentra parado la terminal. Esto es el contexto de build y evita que pueda acceder a otras secciones del anfitrion/server/pc
+
+# docker in docker
+No es recomendable utilizar el socket API que se utiliza docker daemon, ya que podrá acceder a todos los contenedores e incluso al anfitrion
