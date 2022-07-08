@@ -141,3 +141,47 @@ para ver los logs de todos los contenedores juntos
 
 y ver logs de un contenedor en específico
 >docker-compose logs Service_name
+
+# Docker compose override
+Esto se utiliza para crear un ambiente de desarrollo local para no tocar el docker-compose.yml que se esta trabajando con otros equipos.
+La escencia de esto es crear un archivo docker-compose.override.yml y configurarlo tal cual se hace en un docker-compose.yml. Docker lo que hace con este archivo es sobreescribir el docker-compose.yml base. 
+NO se recomienda utilizar con puertos, esos es mejor manejarlos en el docker-compose base.
+
+# Limpieza de recursos en docker sin utilizar
+
+borrar todos los contenedores detenidos y corriendo
+> docker rm -f $(docker ps -aq)
+
+borra TODO en docker (imagenes, contenedores, networks)
+> docker system prune
+
+Poder ver las estadisticas de los contenedores de los recursos que estan usando
+> docker stats
+
+Para limitar la memoria de RAM de un contenedor, en caso de que no corra o se detenga el contenedor, este puede ser revisado con inspect y te puede indicar la razón de porque se detuvo y para falta de memoria sería indicado por OOM (out of memory), se utiliza lo siguiente:
+>docker run -d --name app --memory 1g image_name 
+
+# Diferencia entre SHELL vs EXEC
+Shell no ejecuta los comandos directamente en el contenedor, si no que realiza un proceso aparte, lo cual puede provocar que se tarde en cerrarse o apagar los contenedores porque no pueden detenerse con la señal de apagado. En cambio, EXEC ejecuta los comandos directamente en el main process y cuando reciba la señal de apagado, este se cerrará automaticamente si errores. 
+
+Para revisar que se apagara correctamente, la salida debe retornar 0, si retorna un valor mayor a 128, quiere decir que hubo algun tipo de error.
+
+en los Dockerfile los ingresos de comandos CMD se usan de dos maneras.
+
+para que sean por medio de SHELL debe ser directo (Aqui se crea un loop infinito con el archivo bash)
+CMD /loop.sh
+
+para que esa EXEC, los comandos deben escribirse como si fuera un array
+CMD ["/loop.sh"]
+
+# Contenedores "binarios" para funciones especificas
+En los docker files se utiliza los ENTRYPOINT para después utilizar CMD, que se utiliza como ingreso de parametros.
+
+* Aqui se utiliza la base del dockerfile
+FROM ubuntu:trusty
+* Aqui por medio de nomenclatura EXEC indica que va correr el archivo ping, contando hasta 3 veces
+ENTRYPOINT [ "/bin/ping", "-c", "3"]
+* Aqui se utiliza localhost como default, pero puede sobreescribirse cuando se corre el contenedor y se le agrega un parametro
+CMD ["localhost"]
+
+ejemplo: > docker run --name pinger google.com
