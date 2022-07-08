@@ -129,3 +129,15 @@ se utiliza un archivo llamado docker-compose.yml donde viene toda la configuraci
 
 y se ejecuta con el comando
 > docker-compose up -d
+
+Para detener todos los contenedores y borrar todo de un docker-composs.
+> docker-compose down
+
+Si se requiere ingresar a algun contenedor a su terminal, es parecido a como se hace anteriormente
+>docker-compose exec Service_name bash
+
+para ver los logs de todos los contenedores juntos
+>docker-compose logs
+
+y ver logs de un contenedor en específico
+>docker-compose logs Service_name
